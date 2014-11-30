@@ -1,3 +1,4 @@
+<%@ page import="com.java.db.DBConnection" %>
 <%--
     Document   : index
     Created on : Nov 13, 2014, 9:58:52 AM
@@ -9,13 +10,22 @@ common in all pages.
 
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
-    if (session.getAttribute("login") != "" && session.getAttribute("login") != null) {
-        response.sendRedirect("profileview.jsp?vid=" + session.getAttribute("pid"));
+    if (request.getParameter("addcard") != null) {
+        if (request.getParameter("number") != "" && request.getParameter("number") != null) {
+            String number = request.getParameter("number");
+            number = number.replaceAll("\\s+", "");
+            System.out.println(request.getParameter("number"));
+            String addAccount = "insert into Account values ('" + session.getAttribute("ssn") + "'," + number + ",'" + session.getAttribute("ssn") + "','" + new java.sql.Date(new java.util.Date().getTime()) + "');";
+            System.out.println(addAccount);
+            DBConnection.ExecUpdateQuery(addAccount);
+            response.sendRedirect("date.jsp?askdate=" + request.getParameter("askdate"));
+        }
     }
-
 %>
+
+
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -30,6 +40,8 @@ common in all pages.
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/card.css">
+
     <style>
         body {
             padding-top: 50px;
@@ -53,36 +65,49 @@ common in all pages.
 <div class="container-fluid">
     <div class="row row-centered">
         <div class="col-lg-4 col-md-4 col-sm-10 col-centered translucent-background">
-            <h3>
-                <div class="welcome-text">Welcome to Peafowl Dating</div>
-                <div class="index-heading">Dating Made Easy!</div>
-            </h3>
-            <div class="text-center">
-                <p>Please Login or <a href="register.jsp"> Register</a> to Continue</p>
-            </div>
-            <form action="login.jsp" method="POST">
-                <input type="hidden" name="actiontype" value="Login">
 
-                <div class="form-group">
-                    <label for="useremail">Email address</label>
-                    <input type="email" class="form-control" id="useremail" name="email" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="userpassword">Password</label>
-                    <input type="password" class="form-control" id="userpassword" name="password"
-                           placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-default">Login</button>
-            </form>
+            <style>
+                .demo-container {
+                    width: 100%;
+                    max-width: 350px;
+                    margin: 50px auto;
+                }
 
-            <hr>
-            <div class="pull-right">
-                No account?
-                <a href="register.jsp"><strong>Register</strong></a>
+                form {
+                    margin: 30px;
+                }
+
+                input {
+                    width: 200px;
+                    margin: 10px auto;
+                    display: block;
+                }
+            </style>
+            <div class="demo-container">
+                <div class="card-wrapper"></div>
+
+                <div class="form-container active">
+                    <form action="addaccount.jsp" method="POST">
+                        <input placeholder="Card number" type="text" name="number">
+                        <input placeholder="Full name" type="text" name="name">
+                        <input placeholder="MM/YY" type="text" name="expiry">
+                        <input placeholder="CVC" type="text" name="cvc">
+                        <input type="hidden" name="addcard" value="true">
+                        <input type="submit" class="btn btn-warning center-block" value="Add Card">
+                    </form>
+                </div>
             </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="/js/card.js"></script>
+            <script>
+                $('.active form').card({
+                    container: $('.card-wrapper')
+                })
+            </script>
 
         </div>
-</div>
+    </div>
 </div>
 
 
@@ -96,8 +121,6 @@ boobooboobooboo
     <p>&copy; The Peafowl group 2014</p>
 </footer>
 <!-- /container -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
 
 <script src="js/vendor/bootstrap.min.js"></script>
 

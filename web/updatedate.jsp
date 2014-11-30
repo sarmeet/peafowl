@@ -10,7 +10,9 @@ common in all pages.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%
 
+%>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -32,10 +34,18 @@ common in all pages.
         }
     </style>
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+    <script src="js/jquery-2.1.1.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
     <link href='http://fonts.googleapis.com/css?family=Nixie+One' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/main.css">
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
     <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="js/moment.js"></script>
+    <script src="js/bootstrap-datetimepicker.js"></script>
+
+
 </head>
 
 <%--
@@ -47,52 +57,47 @@ common in all pages.
 <body>
 <div class="container-fluid">
     <div class="row row-centered">
-        <div class="col-lg-4 col-md-4 col-sm-10 col-centered translucent-background">
-            <h3>
-                Search
-            </h3>
+        <div class="col-lg-10 col-md-10 col-sm-10 col-centered translucent-background">
 
-            <form role="form" action="searchresults.jsp">
+            <form action="date.jsp" method="POST">
+                <input type="hidden" name="actiontype" value="update_date">
+
                 <div class="form-group">
-                    <label for="sex">Sex</label>
-                    <select class="form-control" id="sex" name="sex">
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="LowerAge">Lower Age Limit</label>
-                    <input type="number" class="form-control" name="LowerAge" id="LowerAge" placeholder="18-100"
+                    <label for="Location">Location</label>
+                    <input type="text" class="form-control" id="Location" name="location" placeholder="Enter Location"
                            required/>
                 </div>
                 <div class="form-group">
-                    <label for="UpperAge">Upper Age Limit</label>
-                    <input type="number" class="form-control" id="UpperAge" name="UpperAge" placeholder="18-100"
-                           required/>
-                </div>
+                    <label for="datetimepicker1">Data and Time</label>
 
-                <div class="form-group">
-                    <label for="UpperHeight">Height Less Than</label>
-                    <input type="number" class="form-control" id="UpperHeight" name="UpperHeight" placeholder="18-100"/>
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control"/>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
                 </div>
-
                 <div class="form-group">
-                    <label for="LowerHeight">Height Greater Than</label>
-                    <input type="number" class="form-control" id="LowerHeight" name="LowerHeight" placeholder="18-100"/>
+                    <label for="bookingfee">Price[$]</label>
+                    <input type="text" class="form-control" id="bookingfee" name="fee" value="50" placeholder="$50"
+                           disabled/>
                 </div>
-
                 <div class="form-group">
-                    <label for="UpperWeight">Weight Less Than</label>
-                    <input type="number" class="form-control" id="UpperWeight" name="UpperWeight" placeholder="18-100"/>
+                    <label for="comments">Comments</label>
+                    <input type="text" class="form-control" id="comments" name="comments" placeholder="Your comments"/>
                 </div>
-
                 <div class="form-group">
-                    <label for="LowerWeight">Weight Greater Than</label>
-                    <input type="number" class="form-control" id="LowerWeight" name="LowerWeight" placeholder="18-100"/>
+                    <label for="Ratings">Rating</label>
+                    <input type="number" class="form-control" id="Ratings" name="ratings" placeholder="3"/>
                 </div>
-                <button type="submit" class="btn btn-default">Search</button>
+                <input type="submit" name="submit" value="submit">
             </form>
         </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+        </script>
+
     </div>
 </div>
 
@@ -107,8 +112,6 @@ boobooboobooboo
     <p>&copy; The Peafowl group 2014</p>
 </footer>
 <!-- /container -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
 
 <script src="js/vendor/bootstrap.min.js"></script>
 

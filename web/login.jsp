@@ -6,6 +6,7 @@
         String email = request.getParameter("email");
         String userpasswd = request.getParameter("password");
         String query = null;
+        System.out.println("i am here");
         if ((email != null) && (userpasswd != null)) {
             if (email.trim().equals("") || userpasswd.trim().equals("")) {
                 request.setAttribute("message", "Username or password not present");
@@ -17,6 +18,7 @@
 
                 if (rs.next()) {
                     session.setAttribute("login", "true");
+                    session.setAttribute("ssn", rs.getString("SSN"));
                     session.setAttribute("email", email);
                     session.setAttribute("firstName", rs.getString("FirstName"));
                     session.setAttribute("lastName", rs.getString("LastName"));
@@ -37,7 +39,7 @@
                         session.setAttribute("creationDate", profiles.getDate("CreationDate"));
                         session.setAttribute("updateDate", profiles.getDate("LastModDate"));
                         session.setAttribute("hairColor", profiles.getString("HairColor"));
-                        response.sendRedirect("profile.jsp");
+                        response.sendRedirect("profileview.jsp?vid=" + session.getAttribute("pid"));
 
                     } else {
                         request.setAttribute("message", "Unable to get profile");
@@ -50,7 +52,6 @@
                 }
             }
         }
-
 
     } else {
         session.setAttribute("message", "Something went wrong. Please try again");

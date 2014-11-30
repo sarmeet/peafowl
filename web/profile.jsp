@@ -9,6 +9,8 @@
     if (session.getAttribute("login") == "" || session.getAttribute("login") == null) {
         response.sendRedirect("index.jsp");
     }
+
+
 %>
 <!doctype html>
 <html class="no-js" lang="en">

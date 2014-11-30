@@ -2,19 +2,45 @@
    Author's custom styles
    ========================================================================== */
 
+.row-centered {
+    text-align: center;
+}
 
+.col-centered {
+    display: inline-block;
+    float: none;
+    /* reset the text-align */
+    text-align: left;
+    /* inline-block space fix */
+    margin-right: -4px;
+}
 
+body {
+    background-image: url("../img/backgrounds/skulls.png");
+    background-repeat: repeat;
+}
 
+.index-heading {
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    text-shadow: #101010;
+    color: darkred;
 
+}
 
+.welcome-text {
+    font-family: 'Nixie One', cursive;
+    text-align: center;
+}
 
+.translucent-background {
+    background-color: rgba(2, 2, 2, .2);
+    padding: 10px;
+    border-radius: 1%;
+    border-color: #000000;
+    border-width: 10px;
+}
 
-
-
-
-
-
-
-
-
-
+.centered-src {
+    align-content: center;
+}
