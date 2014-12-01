@@ -80,6 +80,30 @@
         }
     }
 
+    if (request.getParameter("AcceptDate") != "" && request.getParameter("AcceptDate") != null) {
+        String MarkAccepted = "UPDATE Date SET CustRep ='000-00-0000' where Profile1='" + request.getParameter("AcceptDate") + "' and Profile2='" + session.getAttribute("pid") + "';";
+        System.out.println(MarkAccepted);
+        DBConnection.ExecUpdateQuery(MarkAccepted);
+        response.sendRedirect("viewdates.jsp");
+    }
+
+    if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("update_date")) {
+        String update_date_query = "Update Date Set Location='"
+                + request.getParameter("location") + "', Date_Time='"
+                + request.getParameter("datetime") + "', BookingFee="
+                + request.getParameter("fee") + ", Comments='"
+                + request.getParameter("comments") + "', User1Rating="
+                + request.getParameter("ratings1") + " where Profile1='"
+                + session.getAttribute("pid") + "' and Profile2='" +
+                request.getParameter("dateWith") + "';";
+
+        System.out.println(update_date_query);
+        DBConnection.ExecUpdateQuery(update_date_query);
+        response.sendRedirect("viewdates.jsp");
+
+    }
+
+
 %>
 <html>
 <head>

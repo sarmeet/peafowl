@@ -61,6 +61,8 @@ common in all pages.
 
             <form action="date.jsp" method="POST">
                 <input type="hidden" name="actiontype" value="update_date">
+                <input type="hidden" name="dateWith" value="<%out.print(request.getParameter("dateWith"));%>">
+
 
                 <div class="form-group">
                     <label for="Location">Location</label>
@@ -71,30 +73,36 @@ common in all pages.
                     <label for="datetimepicker1">Data and Time</label>
 
                     <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control"/>
+                        <input type='text' name=datetime class="form-control" data-date-format="YYYY/MM/DD HH:mm:ss"/>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="bookingfee">Price[$]</label>
-                    <input type="text" class="form-control" id="bookingfee" name="fee" value="50" placeholder="$50"
+                    <input type="text" class="form-control" id="bookingfee" placeholder="$50"
                            disabled/>
                 </div>
+                <input type="hidden" name="fee" value="50">
+
                 <div class="form-group">
                     <label for="comments">Comments</label>
                     <input type="text" class="form-control" id="comments" name="comments" placeholder="Your comments"/>
                 </div>
                 <div class="form-group">
                     <label for="Ratings">Rating</label>
-                    <input type="number" class="form-control" id="Ratings" name="ratings" placeholder="3"/>
+                    <input type="number" class="form-control" id="Ratings" name="ratings1" placeholder="3"/>
                 </div>
                 <input type="submit" name="submit" value="submit">
             </form>
         </div>
         <script type="text/javascript">
             $(function () {
-                $('#datetimepicker1').datetimepicker();
+
+                $('#datetimepicker1').datetimepicker({
+
+                    pick12HourFormat: false
+                });
             });
         </script>
 

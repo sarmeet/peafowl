@@ -111,7 +111,7 @@
                         <div class="name-field">
                             <label>Last Name
                                 <small>(required)</small>
-                                <input type="text" name="lastname" required pattern="alpha_numeric">
+                                <input type="text" name="lastname" required>
                             </label>
                             <small class="error">An username is required.</small>
                         </div>

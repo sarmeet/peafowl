@@ -80,6 +80,8 @@ common in all pages.
                                            data-toggle="tab">Requested Dates</a></li>
                 <li role="presentation"><a href="#ongoinddates" aria-controls="ongoingdates" role="tab"
                                            data-toggle="tab">Ongoing Dates</a></li>
+                <li role="presentation"><a href="#pastdates" aria-controls="pastdates" role="tab"
+                                           data-toggle="tab">Past Dates</a></li>
             </ul>
 
             <div class="tab-content">
@@ -167,9 +169,17 @@ common in all pages.
                                 <%out.print(grd.getString("Date_Time"));%>
                             </td>
                             <td>
+
+                                <%if (grd.getString("CustRep") != null && grd.getString("CustRep").equalsIgnoreCase("000-00-0000")) {%>
+
+                                <button type="button" class="btn btn-success" disabled>Date Accepted</button>
+
+
+                                <% } else {%>
                                 <a href=date.jsp?AcceptDate=<%out.print(grd.getString("Profile1"));%>>
                                     <button type="button" class="btn btn-success">Accept Date</button>
                                 </a>
+                                <% }%>
                             </td>
                             <td>
                                 <a href=date.jsp?CancelDate=true&&DateType=received&&dateWith=<%
@@ -261,6 +271,15 @@ common in all pages.
                             </td>
                             <td>
                                 <%out.print(gsd.getString("Date_Time"));%>
+
+                                <% if (gsd.getString("CustRep") != null && gsd.getString("CustRep").equals("000-00-0000")) { %>
+                                <a href=updatedate.jsp?dateWith=<%out.print(gsd.getString("Profile2"));%>>
+                                    <button type="button" class="btn btn-info">Action Required</button>
+                                </a>
+
+                                <%
+                                    }
+                                %>
                             </td>
                             <td>
                                 <a href=date.jsp?CancelDate=true&&DateType=requested&&dateWith=<%
@@ -279,6 +298,8 @@ common in all pages.
 
                 </div>
                 <div role="tabpanel" class="tab-pane" id="ongoingdates">...</div>
+                <div role="tabpanel" class="tab-pane" id="pastdates">...</div>
+
             </div>
 
             <script>
