@@ -51,6 +51,7 @@ common in all pages.
             <h3>
                 Search
             </h3>
+
             <div class="pull-right">
 
                 <a href="viewdates.jsp">

@@ -53,264 +53,418 @@ common in all pages.
 
 <body>
 <%
+    try {
+        String getSuggestedTo = "select * from BlindDate where ProfileB='" + session.getAttribute("pid") + "';";
+        String getReceivedDates = "select * from Date D where D.Profile2='" + session.getAttribute("pid") + "' and D.Location IS NULL;";
+        String getSuggestedDates = "select * from BlindDate where profileC='" + session.getAttribute("pid") + "';";
+        String getSentDates = "select * from Date where Profile1='" + session.getAttribute("pid") + "' and ;";
+        String getOngoingDates = "SELECT * FROM Date D WHERE D.Profile1 = '" + session.getAttribute("pid") + "' or D.Profile2='" + session.getAttribute("pid") + "' AND D.Date_Time > NOW() and CustRep is not null;";
+        String getPastDates = "SELECT * FROM Date D WHERE D.Profile1 = '" + session.getAttribute("pid") + "' or D.Profile2='" + session.getAttribute("pid") + "' AND D.Date_Time < NOW() and CustRep is not null;";
 
-    String getSuggestedTo = "select * from BlindDate where ProfileB='" + session.getAttribute("pid") + "';";
-    String getReceivedDates = "select * from Date where Profile2='" + session.getAttribute("pid") + "';";
-    String getSuggestedDates = "select * from BlindDate where profileC='" + session.getAttribute("pid") + "';";
-    String getSentDates = "select * from Date where Profile1='" + session.getAttribute("pid") + "';";
-    System.out.println(getSuggestedTo);
-    System.out.println(getReceivedDates);
-    System.out.println(getSuggestedDates);
-    System.out.println(getSentDates);
-
-    ResultSet gst = DBConnection.ExecQuery(getSuggestedTo);
-    ResultSet grd = DBConnection.ExecQuery(getReceivedDates);
-    ResultSet gsud = DBConnection.ExecQuery(getSuggestedDates);
-    ResultSet gsd = DBConnection.ExecQuery(getSentDates);
+        System.out.println(getSuggestedTo);
+        System.out.println(getReceivedDates);
+        System.out.println(getSuggestedDates);
+        System.out.println(getSentDates);
+        System.out.println(getOngoingDates);
+        ResultSet gst = DBConnection.ExecQuery(getSuggestedTo);
+        ResultSet grd = DBConnection.ExecQuery(getReceivedDates);
+        ResultSet gsud = DBConnection.ExecQuery(getSuggestedDates);
+        ResultSet gsd = DBConnection.ExecQuery(getSentDates);
+        ResultSet god = DBConnection.ExecQuery(getOngoingDates);
+        ResultSet gpd = DBConnection.ExecQuery(getPastDates);
 
 
 %>
 <div class="container-fluid">
-    <div class="row row-centered">
-        <div class="col-lg-8 col-md-8 col-sm-10 col-centered translucent-background">
-            <ul class="nav nav-tabs" role="tablist" id="myTab">
-                <li role="presentation" class="active"><a href="#incomingrequests" aria-controls="incomingrequests"
-                                                          role="tab" data-toggle="tab">Incoming Date Requests</a></li>
-                <li role="presentation"><a href="#sentrequests" aria-controls="Sent Requests" role="tab"
-                                           data-toggle="tab">Requested Dates</a></li>
-                <li role="presentation"><a href="#ongoinddates" aria-controls="ongoingdates" role="tab"
-                                           data-toggle="tab">Ongoing Dates</a></li>
-                <li role="presentation"><a href="#pastdates" aria-controls="pastdates" role="tab"
-                                           data-toggle="tab">Past Dates</a></li>
-            </ul>
+<div class="row row-centered">
+<div class="col-lg-8 col-md-8 col-sm-10 col-centered translucent-background">
+<div class="pull-right">
 
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="incomingrequests">
-
-                    <h3>Incoming Suggestions</h3>
-
-                    <table class="table table-hover">
-
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Suggested By
-                            </th>
-                            <th>
-                                Accept
-                            </th>
-
-                            <th>
-                                Reject
-                            </th>
-                        </tr>
-                        <%
-                            while (gst.next()) {
-                        %>
-                        <tr>
-                            <td>
-                                <a href=profileview.jsp?vid=<%out.print(gst.getString("ProfileC"));%>><%
-                                    out.print(gst.getString("ProfileC"));%></a>
-                            </td>
-                            <td>
-                                <a href=profileview.jsp?vid=<%out.print(gst.getString("ProfileA"));%>><%
-                                    out.print(gst.getString("ProfileA"));%></a>
-                            </td>
-                            <td>
-                                <a href=date.jsp?ref=suggested&&askdate=<%out.print(gst.getString("ProfileC"));%>>
-                                    <button type="button" class="btn btn-success">Accept Date</button>
-                                </a>
-                            </td>
-                            <td>
-                                <a href=date.jsp?cancel=true&&DateType=gotsuggested&&dateWith=<%
-                                    out.print(gst.getString("ProfileC"));%>>
-                                    <button type="button" class="btn btn-danger">Delete Date</button>
-                                </a>
-                            </td>
-
-                        </tr>
-
-
-                        <%
-                            }
-                        %>
-                    </table>
-
-                    <h3>Incoming Date Requests</h3>
-
-                    <table class="table table-hover">
-
-                        <tr>
-                            <th>
-                                Request From
-                            </th>
-                            <th>
-                                Asked On
-                            </th>
-                            <th>
-                                Accept
-                            </th>
-
-                            <th>
-                                Reject
-                            </th>
-                        </tr>
-                        <%
-                            while (grd.next()) {
-                        %>
-                        <tr>
-                            <td>
-                                <a href=profileview.jsp?vid=<%out.print(grd.getString("Profile1"));%>><%
-                                    out.print(grd.getString("Profile1"));%></a>
-                            </td>
-                            <td>
-                                <%out.print(grd.getString("Date_Time"));%>
-                            </td>
-                            <td>
-
-                                <%if (grd.getString("CustRep") != null && grd.getString("CustRep").equalsIgnoreCase("000-00-0000")) {%>
-
-                                <button type="button" class="btn btn-success" disabled>Date Accepted</button>
-
-
-                                <% } else {%>
-                                <a href=date.jsp?AcceptDate=<%out.print(grd.getString("Profile1"));%>>
-                                    <button type="button" class="btn btn-success">Accept Date</button>
-                                </a>
-                                <% }%>
-                            </td>
-                            <td>
-                                <a href=date.jsp?CancelDate=true&&DateType=received&&dateWith=<%
-                                    out.print(grd.getString("Profile1"));%>>
-                                    <button type="button" class="btn btn-danger">Delete Date</button>
-                                </a>
-                            </td>
-
-                        </tr>
-
-                        <%
-                            }
-                        %>
-                    </table>
-
-
-                </div>
-                <div role="tabpanel" class="tab-pane" id="sentrequests">
-
-
-                    <h3>Suggested To
-                        <small>(you cannot accept these)</small>
-                    </h3>
-
-                    <table class="table table-hover">
-
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                Suggested By
-                            </th>
-
-                            <th>
-                                Reject
-                            </th>
-                        </tr>
-                        <%
-                            while (gsud.next()) {
-                        %>
-                        <tr>
-                            <td>
-                                <a href=profileview.jsp?vid=<%out.print(gsud.getString("ProfileB"));%>><%
-                                    out.print(gsud.getString("ProfileB"));%></a>
-                            </td>
-                            <td>
-                                <a href=profileview.jsp?vid=<%out.print(gsud.getString("ProfileA"));%>><%
-                                    out.print(gsud.getString("ProfileA"));%></a>
-                            </td>
-                            <td>
-                                <a href=date.jsp?cancel=true&&DateType=suggestedTo&&dateWith=<%
-                                    out.print(gsud.getString("ProfileB"));%>>
-                                    <button type="button" class="btn btn-danger">Delete Date</button>
-                                </a>
-                            </td>
-
-                        </tr>
-
-
-                        <%
-                            }
-                        %>
-                    </table>
-
-                    <h3>Asked Dates</h3>
-
-                    <table class="table table-hover">
-
-                        <tr>
-                            <th>
-                                Requested To
-                            </th>
-                            <th>
-                                Asked On
-                            </th>
-
-                            <th>
-                                Reject
-                            </th>
-                        </tr>
-                        <%
-                            while (gsd.next()) {
-                        %>
-                        <tr>
-                            <td>
-                                <a href=profileview.jsp?vid=<%out.print(gsd.getString("Profile2"));%>><%
-                                    out.print(gsd.getString("Profile2"));%></a>
-                            </td>
-                            <td>
-                                <%out.print(gsd.getString("Date_Time"));%>
-
-                                <% if (gsd.getString("CustRep") != null && gsd.getString("CustRep").equals("000-00-0000")) { %>
-                                <a href=updatedate.jsp?dateWith=<%out.print(gsd.getString("Profile2"));%>>
-                                    <button type="button" class="btn btn-info">Action Required</button>
-                                </a>
-
-                                <%
-                                    }
-                                %>
-                            </td>
-                            <td>
-                                <a href=date.jsp?CancelDate=true&&DateType=requested&&dateWith=<%
-                                    out.print(gsd.getString("Profile2"));%>>
-                                    <button type="button" class="btn btn-danger">Delete Date</button>
-                                </a>
-                            </td>
-
-                        </tr>
-
-                        <%
-                            }
-                        %>
-                    </table>
-
-
-                </div>
-                <div role="tabpanel" class="tab-pane" id="ongoingdates">...</div>
-                <div role="tabpanel" class="tab-pane" id="pastdates">...</div>
-
-            </div>
-
-            <script>
-                $(function () {
-                    $('#myTab a:last').tab('show')
-                })
-            </script>
-        </div>
-    </div>
+    <a href="viewdates.jsp">
+        <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-heart-empty"
+                                                         aria-hidden="true"></span>
+            View Dates
+        </button>
+    </a>
+    <a href="search.jsp">
+        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search"
+                                                            aria-hidden="true"></span>
+            Search
+        </button>
+    </a>
+    <a href="logout.jsp">
+        <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"
+                                                           aria-hidden="true"></span>Logout
+        </button>
+    </a>
 </div>
+<hr>
+<ul class="nav nav-tabs" role="tablist" id="myTab">
+    <li role="presentation" class="active"><a href="#incomingrequests" aria-controls="incomingrequests"
+                                              role="tab" data-toggle="tab">Incoming Date Requests</a></li>
+    <li role="presentation"><a href="#sentrequests" aria-controls="Sent Requests" role="tab"
+                               data-toggle="tab">Requested Dates</a></li>
+    <li role="presentation"><a href="#ongoingdates" aria-controls="ongoingdates" role="tab"
+                               data-toggle="tab">Ongoing Dates</a></li>
+    <li role="presentation"><a href="#pastdates" aria-controls="pastdates" role="tab"
+                               data-toggle="tab">Past Dates</a></li>
+</ul>
 
+<div class="tab-content">
+<div role="tabpanel" class="tab-pane active" id="incomingrequests">
+
+    <h3>Incoming Suggestions</h3>
+
+    <table class="table table-hover">
+
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Suggested By
+            </th>
+            <th>
+                Accept
+            </th>
+
+            <th>
+                Reject
+            </th>
+        </tr>
+        <%
+            while (gst.next()) {
+        %>
+        <tr>
+            <td>
+                <a href=profileview.jsp?vid=<%out.print(gst.getString("ProfileC"));%>><%
+                    out.print(gst.getString("ProfileC"));%></a>
+            </td>
+            <td>
+                <a href=profileview.jsp?vid=<%out.print(gst.getString("ProfileA"));%>><%
+                    out.print(gst.getString("ProfileA"));%></a>
+            </td>
+            <td>
+                <a href=date.jsp?ref=suggested&&askdate=<%out.print(gst.getString("ProfileC"));%>>
+                    <button type="button" class="btn btn-success">Accept Date</button>
+                </a>
+            </td>
+            <td>
+                <a href=date.jsp?cancel=true&&DateType=gotsuggested&&dateWith=<%
+                    out.print(gst.getString("ProfileC"));%>>
+                    <button type="button" class="btn btn-danger">Delete Date</button>
+                </a>
+            </td>
+
+        </tr>
+
+
+        <%
+            }
+        %>
+    </table>
+
+    <h3>Incoming Date Requests</h3>
+
+    <table class="table table-hover">
+
+        <tr>
+            <th>
+                Request From
+            </th>
+            <th>
+                Asked On
+            </th>
+            <th>
+                Accept
+            </th>
+
+            <th>
+                Reject
+            </th>
+        </tr>
+        <%
+            while (grd.next()) {
+        %>
+        <tr>
+            <td>
+                <a href=profileview.jsp?vid=<%out.print(grd.getString("Profile1"));%>><%
+                    out.print(grd.getString("Profile1"));%></a>
+            </td>
+            <td>
+                <%out.print(grd.getString("Date_Time"));%>
+            </td>
+            <td>
+
+                <%if (grd.getString("CustRep") != null && grd.getString("CustRep").equalsIgnoreCase("000-00-0000")) {%>
+
+                <button type="button" class="btn btn-success" disabled>Date Accepted</button>
+
+
+                <% } else {%>
+                <a href=date.jsp?AcceptDate=<%out.print(grd.getString("Profile1"));%>>
+                    <button type="button" class="btn btn-success">Accept Date</button>
+                </a>
+                <% }%>
+            </td>
+            <td>
+                <a href=date.jsp?CancelDate=true&&DateType=received&&dateWith=<%
+                    out.print(grd.getString("Profile1"));%>>
+                    <button type="button" class="btn btn-danger">Delete Date</button>
+                </a>
+            </td>
+
+        </tr>
+
+        <%
+            }
+        %>
+    </table>
+
+
+</div>
+<div role="tabpanel" class="tab-pane" id="sentrequests">
+
+
+    <h3>Suggested To
+        <small>(you cannot accept these)</small>
+    </h3>
+
+    <table class="table table-hover">
+
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Suggested By
+            </th>
+
+            <th>
+                Reject
+            </th>
+        </tr>
+        <%
+            while (gsud.next()) {
+        %>
+        <tr>
+            <td>
+                <a href=profileview.jsp?vid=<%out.print(gsud.getString("ProfileB"));%>><%
+                    out.print(gsud.getString("ProfileB"));%></a>
+            </td>
+            <td>
+                <a href=profileview.jsp?vid=<%out.print(gsud.getString("ProfileA"));%>><%
+                    out.print(gsud.getString("ProfileA"));%></a>
+            </td>
+            <td>
+                <a href=date.jsp?cancel=true&&DateType=suggestedTo&&dateWith=<%
+                    out.print(gsud.getString("ProfileB"));%>>
+                    <button type="button" class="btn btn-danger">Delete Date</button>
+                </a>
+            </td>
+
+        </tr>
+
+
+        <%
+            }
+        %>
+    </table>
+
+    <h3>Asked Dates</h3>
+
+    <table class="table table-hover">
+
+        <tr>
+            <th>
+                Requested To
+            </th>
+            <th>
+                Asked On
+            </th>
+
+            <th>
+                Reject
+            </th>
+        </tr>
+        <%
+            while (gsd != null && gsd.next()) {
+        %>
+        <tr>
+            <td>
+                <a href=profileview.jsp?vid=<%out.print(gsd.getString("Profile2"));%>><%
+                    out.print(gsd.getString("Profile2"));%></a>
+            </td>
+            <td>
+                <%out.print(gsd.getString("Date_Time"));%>
+
+                <% if (gsd.getString("CustRep") != null && gsd.getString("CustRep").equals("000-00-0000")) { %>
+                <a href=updatedate.jsp?dateWith=<%out.print(gsd.getString("Profile2"));%>>
+                    <button type="button" class="btn btn-info">Action Required</button>
+                </a>
+
+                <%
+                    }
+                %>
+            </td>
+            <td>
+                <a href=date.jsp?CancelDate=true&&DateType=requested&&dateWith=<%
+                    out.print(gsd.getString("Profile2"));%>>
+                    <button type="button" class="btn btn-danger">Delete Date</button>
+                </a>
+            </td>
+
+        </tr>
+
+        <%
+            }
+        %>
+    </table>
+
+
+</div>
+<div role="tabpanel" class="tab-pane" id="ongoingdates">
+
+    <table class="table table-hover">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Comments
+            </th>
+
+            <th>
+                Cancel
+            </th>
+        </tr>
+
+        <%
+            while (god != null && god.next()) {
+
+        %>
+        <tr>
+            <td>
+                <% if (god.getString("Profile1").equalsIgnoreCase((String) session.getAttribute("pid"))) { %>
+                <a href=profileview.jsp?vid=<%out.print(god.getString("Profile2"));%>><%
+                    out.print(god.getString("Profile2"));%></a>
+                <%} else {%>
+                <a href=profileview.jsp?vid=<%out.print(god.getString("Profile1"));%>><%
+                    out.print(god.getString("Profile1"));%></a>
+                <%}%>
+            </td>
+            <td>
+                <%out.print(god.getString("Location"));%>
+            </td>
+            <td>
+                <%out.print(god.getString("Date_Time"));%>
+            </td>
+            <td>
+                <%out.print(god.getString("Comments"));%>
+            </td>
+            <td>
+                <%
+                    if (god.getString("Profile1").equalsIgnoreCase((String) session.getAttribute("pid"))) {
+                %>
+
+                <a href=date.jsp?CancelDate=true&&DateType=requested&&dateWith=<%
+                    out.print(god.getString("Profile2"));%>>
+                    <button type="button" class="btn btn-danger">Delete Date</button>
+                </a>
+                <%} else {%>
+
+                <a href=date.jsp?CancelDate=true&&DateType=received&&dateWith=<%out.print(god.getString("Profile1"));%>>
+                    <button type="button" class="btn btn-danger">Delete Date</button>
+                </a>
+                <%}%>
+            </td>
+
+        </tr>
+        <%}%>
+    </table>
+
+
+</div>
+<div role="tabpanel" class="tab-pane" id="pastdates">
+
+    <table class="table table-hover">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Comments
+            </th>
+
+            <th>
+                Partner's Raring
+            </th>
+
+            <th>
+                Your Raring
+            </th>
+        </tr>
+
+        <%
+            while (god != null && god.next()) {
+
+        %>
+        <tr>
+            <td>
+                <% if (god.getString("Profile1").equalsIgnoreCase((String) session.getAttribute("pid"))) { %>
+                <a href=profileview.jsp?vid=<%out.print(god.getString("Profile2"));%>><%
+                    out.print(god.getString("Profile2"));%></a>
+                <%} else {%>
+                <a href=profileview.jsp?vid=<%out.print(god.getString("Profile1"));%>><%
+                    out.print(god.getString("Profile1"));%></a>
+                <%}%>
+            </td>
+            <td>
+                <%out.print(god.getString("Location"));%>
+            </td>
+            <td>
+                <%out.print(god.getString("Date_Time"));%>
+            </td>
+            <td>
+                <%out.print(god.getString("Comments"));%>
+            </td>
+            <td>
+                <%out.print(god.getString("User1Rating"));%>
+            </td>
+            <td>
+                <%out.print(god.getString("User2Rating"));%>
+            </td>
+        </tr>
+        <%}%>
+    </table>
+</div>
+</div>
+<script>
+    $(function () {
+        $('#myTab a:last').tab('show')
+    })
+</script>
+</div>
+</div>
+</div>
+<%
+    } catch (Exception e) {
+        System.out.println("Something went wrong!");
+        response.sendRedirect("profileview.jsp?vid=" + session.getAttribute("pid"));
+    }
+%>
 
 <%--
 common in all pages.

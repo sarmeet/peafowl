@@ -68,12 +68,14 @@
 
                 // remove requested dates
                 String delete_date = "delete from Date where Profile1 ='" + session.getAttribute("pid") + "' and Profile2='" + request.getParameter("dateWith") + "';";
+                System.out.println(delete_date);
                 DBConnection.ExecUpdateQuery(delete_date);
                 response.sendRedirect("viewdates.jsp");
 
             }
             if (request.getParameter("DateType").equalsIgnoreCase("received")) {
                 String delete_date = "delete from Date where Profile2 ='" + session.getAttribute("pid") + "' and Profile1='" + request.getParameter("dateWith") + "';";
+                System.out.println(delete_date);
                 DBConnection.ExecUpdateQuery(delete_date);
                 response.sendRedirect("viewdates.jsp");
             }
@@ -103,14 +105,4 @@
 
     }
 
-
 %>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-
-</body>
-</html>

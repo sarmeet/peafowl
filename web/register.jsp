@@ -90,15 +90,15 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-    <div class="large-12 columns">
-        <center>
-            <h1>
-                <div class="custom-heading-js">Welcome to Peafowl Dating</div>
-            </h1>
-        </center>
-    </div>
+        <div class="large-12 columns">
+            <center>
+                <h1>
+                    <div class="custom-heading-js">Welcome to Peafowl Dating</div>
+                </h1>
+            </center>
+        </div>
 
-</div>
+    </div>
 
 
     <div class="row-centered">
@@ -108,132 +108,132 @@
                 <div class="row">
                     <form data-abide method="POST">
                         <div class="col-lg-4">
-                        <input type="hidden" name="actiontype" value="register">
+                            <input type="hidden" name="actiontype" value="register">
 
-                    <fieldset>
-                        <legend>About You</legend>
+                            <fieldset>
+                                <legend>About You</legend>
 
-                        <div class="name-field">
-                            <label>First Name
-                                <small>(required)</small>
-                                <input type="text" name="firstname" required pattern="[a-zA-Z]+">
-                            </label>
-                            <small class="error">An name is required.</small>
+                                <div class="name-field">
+                                    <label>First Name
+                                        <small>(required)</small>
+                                        <input type="text" name="firstname" required pattern="[a-zA-Z]+">
+                                    </label>
+                                    <small class="error">An name is required.</small>
+                                </div>
+
+                                <div class="name-field">
+                                    <label>Last Name
+                                        <small>(required)</small>
+                                        <input type="text" name="lastname" required>
+                                    </label>
+                                    <small class="error">An username is required.</small>
+                                </div>
+
+                                <div class="email-field">
+                                    <label>Email
+                                        <small>(required)</small>
+                                        <input type="email" name="email" required>
+                                    </label>
+                                    <small class="error">An email address is required.</small>
+                                </div>
+
+                                <div class="password-field">
+                                    <label>Password
+                                        <small>(required)</small>
+                                        <input type="password" name="password" required>
+                                    </label>
+                                    <small class="error">A password is required.</small>
+                                </div>
+                                <div class="password-field">
+                                    <label>Password
+                                        <small>(again)</small>
+                                        <input type="password" required>
+                                    </label>
+                                    <small class="error">A password is required.</small>
+                                </div>
+
+                                <label>SSN
+                                    <input type="text" name="ssn" placeholder="xxx-xx-xxx...">
+                                </label>
+
+                                <label>Street
+                                    <input type="text" name="street" placeholder="Street address">
+                                </label>
+
+                                <label>City
+                                    <input type="text" name="city" placeholder="City">
+                                </label>
+
+                                <label>State
+                                    <input type="text" name="state" placeholder="state">
+                                </label>
+
+                                <label>Zip code
+                                    <input type="text" name="zipcode" placeholder="xxxxx">
+                                </label>
+
+                                <label>Telephone
+                                    <input type="text" name="phone" placeholder="xxx-xx-xxx...">
+                                </label>
+                            </fieldset>
                         </div>
-
-                        <div class="name-field">
-                            <label>Last Name
-                                <small>(required)</small>
-                                <input type="text" name="lastname" required>
-                            </label>
-                            <small class="error">An username is required.</small>
-                        </div>
-
-                        <div class="email-field">
-                            <label>Email
-                                <small>(required)</small>
-                                <input type="email" name="email" required>
-                            </label>
-                            <small class="error">An email address is required.</small>
-                        </div>
-
-                        <div class="password-field">
-                            <label>Password
-                                <small>(required)</small>
-                                <input type="password" name="password" required>
-                            </label>
-                            <small class="error">A password is required.</small>
-                        </div>
-                        <div class="password-field">
-                            <label>Password
-                                <small>(again)</small>
-                                <input type="password" required>
-                            </label>
-                            <small class="error">A password is required.</small>
-                        </div>
-
-                        <label>SSN
-                            <input type="text" name="ssn" placeholder="xxx-xx-xxx...">
-                        </label>
-
-                        <label>Street
-                            <input type="text" name="street" placeholder="Street address">
-                        </label>
-
-                        <label>City
-                            <input type="text" name="city" placeholder="City">
-                        </label>
-
-                        <label>State
-                            <input type="text" name="state" placeholder="state">
-                        </label>
-
-                        <label>Zip code
-                            <input type="text" name="zipcode" placeholder="xxxxx">
-                        </label>
-
-                        <label>Telephone
-                            <input type="text" name="phone" placeholder="xxx-xx-xxx...">
-                        </label>
-                    </fieldset>
-                </div>
                         <div class="col-lg-4">
 
-                        <fieldset>
-                        <legend>Profile</legend>
-                        <label>Profile ID:
-                            <input type="text" name="profileid" placeholder="profile ID...">
-                        </label>
+                            <fieldset>
+                                <legend>Profile</legend>
+                                <label>Profile ID:
+                                    <input type="text" name="profileid" placeholder="profile ID...">
+                                </label>
 
-                        <label>Age
-                            <input type="number" name="age" placeholder="Enter your age ">
-                        </label>
+                                <label>Age
+                                    <input type="number" name="age" placeholder="Enter your age ">
+                                </label>
 
-                        <label>Lower Dating Range
-                            <input type="number" name="lda" placeholder="lower limit of aceptable mates ">
-                        </label>
+                                <label>Lower Dating Range
+                                    <input type="number" name="lda" placeholder="lower limit of aceptable mates ">
+                                </label>
 
-                        <label>Upper Dating Range
-                            <input type="number" name="uda" placeholder="upper limit of acceptable mates ">
-                        </label>
+                                <label>Upper Dating Range
+                                    <input type="number" name="uda" placeholder="upper limit of acceptable mates ">
+                                </label>
 
 
-                        <label>Geo Dating Range
-                            <input type="number" name="gdr" placeholder="upper limit of acceptable mates ">
-                        </label>
+                                <label>Geo Dating Range
+                                    <input type="number" name="gdr" placeholder="upper limit of acceptable mates ">
+                                </label>
 
-                        <label>Sex
-                            <input type="text" name="sex" placeholder="Male/Female ">
-                        </label>
+                                <label>Sex
+                                    <input type="text" name="sex" placeholder="Male/Female ">
+                                </label>
 
-                        <label>Height
-                            <input type="text" name="height" placeholder="Enter your Height ">
-                        </label>
+                                <label>Height
+                                    <input type="text" name="height" placeholder="Enter your Height ">
+                                </label>
 
-                        <label>Weight
-                            <input type="number" name="weight" placeholder="Enter your weight ">
-                        </label>
+                                <label>Weight
+                                    <input type="number" name="weight" placeholder="Enter your weight ">
+                                </label>
 
-                        <label>Hair Color
-                            <input type="text" name="color" placeholder="Enter your hair color ">
-                        </label>
+                                <label>Hair Color
+                                    <input type="text" name="color" placeholder="Enter your hair color ">
+                                </label>
 
-                        <label>Hobbies
-                            <input type="text" name="hobbies" placeholder="Enter your hair color ">
-                        </label>
+                                <label>Hobbies
+                                    <input type="text" name="hobbies" placeholder="Enter your hair color ">
+                                </label>
 
-                        <div class=" clearfix">
-                            <button type="submit" class="right">Register</button>
+                                <div class=" clearfix">
+                                    <button type="submit" class="right">Register</button>
+                                </div>
+                            </fieldset>
                         </div>
-                    </fieldset>
-                </div>
 
-            </form>
+                    </form>
                 </div>
             </div>
-    </div>
+        </div>
 
-</div>
+    </div>
 
 </div>
 
