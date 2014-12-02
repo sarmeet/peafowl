@@ -51,6 +51,26 @@ common in all pages.
             <h3>
                 Search
             </h3>
+            <div class="pull-right">
+
+                <a href="viewdates.jsp">
+                    <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-heart-empty"
+                                                                     aria-hidden="true"></span>
+                        View Dates
+                    </button>
+                </a>
+                <a href="search.jsp">
+                    <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search"
+                                                                        aria-hidden="true"></span>
+                        Search
+                    </button>
+                </a>
+                <a href="logout.jsp">
+                    <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"
+                                                                       aria-hidden="true"></span>Logout
+                    </button>
+                </a>
+            </div>
 
             <form role="form" action="searchresults.jsp">
                 <div class="form-group">

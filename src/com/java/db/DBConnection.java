@@ -27,7 +27,7 @@ public class DBConnection {
     public static ResultSet ExecQuery(String query) {
         ResultSet myResultSet = null;
         try {
-            if (myConnection == null || (myConnection != null && !myConnection.isValid(0))) {
+            if (myConnection == null || (!myConnection.isValid(0))) {
                 Class.forName(mysJDBCDriver).newInstance();
                 myConnection = DriverManager.getConnection(url, username, password);
             }

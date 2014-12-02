@@ -97,7 +97,6 @@ common in all pages.
                     </button>
                 </a>
             </div>
-            </p>
 
             <hr>
             <div class="row row-centered">

@@ -89,7 +89,7 @@ common in all pages.
                 <div class="form-container active">
                     <form action="addaccount.jsp" method="POST">
                         <input placeholder="Card number" type="text" name="number">
-                        <input type="hidden" name="askdate" value="">
+                        <input type="hidden" name="askdate" value="<%out.print(request.getParameter("askdate"));%>">
                         <input placeholder="Full name" type="text" name="name">
                         <input placeholder="MM/YY" type="text" name="expiry">
                         <input placeholder="CVC" type="text" name="cvc">
