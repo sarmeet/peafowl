@@ -14,6 +14,8 @@
     response.sendRedirect("profileview.jsp?vid=" + request.getParameter("d2"));
 } else {
 
+    // Blind Date area
+
     if ((session.getAttribute("d3") == "" || session.getAttribute("d3") == null) && (request.getParameter("d3") != null && request.getParameter("d3") != "")) {
         session.setAttribute("d3", request.getParameter("d3"));
         String d3 = request.getParameter("d3");
@@ -26,6 +28,7 @@
     }
 }
 
+    // Edit Date Area
     if (request.getParameter("askdate") != "" && request.getParameter("askdate") != null) {
         // check if the user has an associated credit card to charge payment
         String checkAccountquery = "select * from Account where OwnerSSN='" + session.getAttribute("ssn") + "';";
@@ -34,6 +37,15 @@
         if (rs.next())
         // if the user has an associated card, allow him to add the date.
         {
+
+
+            if (request.getParameter("ref") != null && request.getParameter("ref").equalsIgnoreCase("suggested")) {
+                String delete_Blind_date = "DELETE FROM BlindDate WHERE ProfileC = '" + request.getParameter("askdate") + "' AND ProfileB = '" + session.getAttribute("pid") + "';";
+                System.out.println(delete_Blind_date);
+                DBConnection.ExecUpdateQuery(delete_Blind_date);
+
+            }
+
             String addDate = "Insert into Date(Profile1,Profile2,Date_Time) values('" + session.getAttribute("pid") + "','" + request.getParameter("askdate") + "','" + new java.sql.Date(new java.util.Date().getTime()) + "');";
             System.out.print(addDate);
             DBConnection.ExecUpdateQuery(addDate);
@@ -43,7 +55,7 @@
         }
     }
 
-
+    // Cancel Suggestion  Area
     if (request.getParameter("cancel") != null) {
         if (request.getParameter("cancel").equalsIgnoreCase("true")) {
             String delete_Blind_date = null;
@@ -62,6 +74,7 @@
         }
     }
 
+    // Cancel Date Area
     if (request.getParameter("CancelDate") != null) {
         if (request.getParameter("CancelDate").equalsIgnoreCase("true")) {
             if (request.getParameter("DateType").equalsIgnoreCase("requested")) {
@@ -82,6 +95,7 @@
         }
     }
 
+    // accept an incoming date area
     if (request.getParameter("AcceptDate") != "" && request.getParameter("AcceptDate") != null) {
         String MarkAccepted = "UPDATE Date SET CustRep ='000-00-0000' where Profile1='" + request.getParameter("AcceptDate") + "' and Profile2='" + session.getAttribute("pid") + "';";
         System.out.println(MarkAccepted);
@@ -89,6 +103,8 @@
         response.sendRedirect("viewdates.jsp");
     }
 
+
+    // Update a date area
     if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("update_date")) {
         String update_date_query = "Update Date Set Location='"
                 + request.getParameter("location") + "', Date_Time='"
@@ -104,5 +120,6 @@
         response.sendRedirect("viewdates.jsp");
 
     }
+
 
 %>

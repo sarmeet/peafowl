@@ -53,25 +53,6 @@ common in all pages.
 
 <body>
 <%
-    try {
-        String getSuggestedTo = "select * from BlindDate where ProfileB='" + session.getAttribute("pid") + "';";
-        String getReceivedDates = "select * from Date D where D.Profile2='" + session.getAttribute("pid") + "' and D.Location IS NULL;";
-        String getSuggestedDates = "select * from BlindDate where profileC='" + session.getAttribute("pid") + "';";
-        String getSentDates = "select * from Date where Profile1='" + session.getAttribute("pid") + "' and ;";
-        String getOngoingDates = "SELECT * FROM Date D WHERE D.Profile1 = '" + session.getAttribute("pid") + "' or D.Profile2='" + session.getAttribute("pid") + "' AND D.Date_Time > NOW() and CustRep is not null;";
-        String getPastDates = "SELECT * FROM Date D WHERE D.Profile1 = '" + session.getAttribute("pid") + "' or D.Profile2='" + session.getAttribute("pid") + "' AND D.Date_Time < NOW() and CustRep is not null;";
-
-        System.out.println(getSuggestedTo);
-        System.out.println(getReceivedDates);
-        System.out.println(getSuggestedDates);
-        System.out.println(getSentDates);
-        System.out.println(getOngoingDates);
-        ResultSet gst = DBConnection.ExecQuery(getSuggestedTo);
-        ResultSet grd = DBConnection.ExecQuery(getReceivedDates);
-        ResultSet gsud = DBConnection.ExecQuery(getSuggestedDates);
-        ResultSet gsd = DBConnection.ExecQuery(getSentDates);
-        ResultSet god = DBConnection.ExecQuery(getOngoingDates);
-        ResultSet gpd = DBConnection.ExecQuery(getPastDates);
 
 
 %>
@@ -112,6 +93,19 @@ common in all pages.
 
 <div class="tab-content">
 <div role="tabpanel" class="tab-pane active" id="incomingrequests">
+
+
+    <%
+
+        String getSuggestedTo = "select * from BlindDate where ProfileB='" + session.getAttribute("pid") + "';";
+        String getReceivedDates = "select * from Date D where D.Profile2='" + session.getAttribute("pid") + "' and D.Location IS NULL;";
+        System.out.println(getSuggestedTo);
+        System.out.println(getReceivedDates);
+        ResultSet gst = DBConnection.ExecQuery(getSuggestedTo);
+        ResultSet grd = DBConnection.ExecQuery(getReceivedDates);
+
+    %>
+
 
     <h3>Incoming Suggestions</h3>
 
@@ -163,6 +157,7 @@ common in all pages.
             }
         %>
     </table>
+
 
     <h3>Incoming Date Requests</h3>
 
@@ -225,6 +220,17 @@ common in all pages.
 </div>
 <div role="tabpanel" class="tab-pane" id="sentrequests">
 
+
+    <%
+
+        String getSuggestedDates = "select * from BlindDate where profileC='" + session.getAttribute("pid") + "';";
+        String getSentDates = "select * from Date where Profile1='" + session.getAttribute("pid") + "' and Location is null;";
+        System.out.println(getSuggestedDates);
+        System.out.println(getSentDates);
+        ResultSet gsud = DBConnection.ExecQuery(getSuggestedDates);
+        ResultSet gsd = DBConnection.ExecQuery(getSentDates);
+
+    %>
 
     <h3>Suggested To
         <small>(you cannot accept these)</small>
@@ -325,6 +331,16 @@ common in all pages.
 </div>
 <div role="tabpanel" class="tab-pane" id="ongoingdates">
 
+
+    <%
+        String getOngoingDates = "SELECT * FROM Date D WHERE D.Profile1 = '" + session.getAttribute("pid") + "' or D.Profile2='" + session.getAttribute("pid") + "' AND D.Date_Time > NOW() and Location is not null;";
+
+        System.out.println(getOngoingDates);
+        ResultSet god = DBConnection.ExecQuery(getOngoingDates);
+
+    %>
+    <h3>Ongoing Dates</h3>
+
     <table class="table table-hover">
         <tr>
             <th>
@@ -346,7 +362,7 @@ common in all pages.
         </tr>
 
         <%
-            while (god != null && god.next()) {
+            while (god.next()) {
 
         %>
         <tr>
@@ -393,6 +409,15 @@ common in all pages.
 </div>
 <div role="tabpanel" class="tab-pane" id="pastdates">
 
+
+    <%
+        String getPastDates = "SELECT * FROM Date D WHERE D.Profile1 = '" + session.getAttribute("pid") + "' or D.Profile2='" + session.getAttribute("pid") + "' AND D.Date_Time < NOW() and CustRep is not null;";
+
+        System.out.println(getPastDates);
+        ResultSet gpd = DBConnection.ExecQuery(getPastDates);
+
+    %>
+    <h3>Past Dates</h3>
     <table class="table table-hover">
         <tr>
             <th>
@@ -418,37 +443,39 @@ common in all pages.
         </tr>
 
         <%
-            while (god != null && god.next()) {
+            while (gpd != null && gpd.next()) {
 
         %>
         <tr>
             <td>
-                <% if (god.getString("Profile1").equalsIgnoreCase((String) session.getAttribute("pid"))) { %>
-                <a href=profileview.jsp?vid=<%out.print(god.getString("Profile2"));%>><%
-                    out.print(god.getString("Profile2"));%></a>
+                <% if (gpd.getString("Profile1").equalsIgnoreCase((String) session.getAttribute("pid"))) { %>
+                <a href=profileview.jsp?vid=<%out.print(gpd.getString("Profile2"));%>><%
+                    out.print(gpd.getString("Profile2"));%></a>
                 <%} else {%>
-                <a href=profileview.jsp?vid=<%out.print(god.getString("Profile1"));%>><%
-                    out.print(god.getString("Profile1"));%></a>
+                <a href=profileview.jsp?vid=<%out.print(gpd.getString("Profile1"));%>><%
+                    out.print(gpd.getString("Profile1"));%></a>
                 <%}%>
             </td>
             <td>
-                <%out.print(god.getString("Location"));%>
+                <%out.print(gpd.getString("Location"));%>
             </td>
             <td>
-                <%out.print(god.getString("Date_Time"));%>
+                <%out.print(gpd.getString("Date_Time"));%>
             </td>
             <td>
-                <%out.print(god.getString("Comments"));%>
+                <%out.print(gpd.getString("Comments"));%>
             </td>
             <td>
-                <%out.print(god.getString("User1Rating"));%>
+                <%out.print(gpd.getString("User1Rating"));%>
             </td>
             <td>
-                <%out.print(god.getString("User2Rating"));%>
+                <%out.print(gpd.getString("User2Rating"));%>
             </td>
         </tr>
         <%}%>
     </table>
+
+
 </div>
 </div>
 <script>
@@ -459,12 +486,6 @@ common in all pages.
 </div>
 </div>
 </div>
-<%
-    } catch (Exception e) {
-        System.out.println("Something went wrong!");
-        response.sendRedirect("profileview.jsp?vid=" + session.getAttribute("pid"));
-    }
-%>
 
 <%--
 common in all pages.

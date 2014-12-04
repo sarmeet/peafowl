@@ -3,7 +3,8 @@
 <%
     java.sql.ResultSet profiles;
 
-    if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("login") && request.getParameter("multi") == null || session.getAttribute("login").equals("true")) {
+    if (request.getParameter("actiontype").equalsIgnoreCase("login") && request.getParameter("multi") == null) {
+
         String email = request.getParameter("email");
         String userpasswd = request.getParameter("password");
         String query = null;
@@ -27,6 +28,7 @@
                     profiles = DBConnection.ExecQuery(Pquery);
 
 
+                    if (profiles.getFetchSize() > 0) {
 %>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -62,23 +64,15 @@
     <div class="row row-centered">
         <div class="col-lg-8 col-md-8 col-sm-10 col-centered translucent-background">
 
-            <h3>
-                Please select a profile you want to use.
-                <div class="pull-right">
-                    <a href="addprofile.jsp">
-                        <button type="button" class="btn btn-info btn-lg">Add Profile</button>
-                    </a>
-                </div>
+            <h3>You have multiple Profiles</h3>
+            Please select the one you want to use.
 
-            </h3>
             <%while (profiles.next()) {%>
 
-            <a href="login.jsp?actiontype=login&&multi=True&&pid=<%out.print(profiles.getString("ProfileID"));%>">
+            <a href="login.jsp?actiontype=loginmulti=True&&pid=<%out.print(profiles.getString("ProfileID"));%>">
                 <button type="button" class="btn btn-info btn-lg"><%
                     out.print(profiles.getString("ProfileID"));%></button>
             </a>
-            <br>
-            <br>
 
 
             <%}%>
@@ -121,13 +115,37 @@
 
 
 <%
+                    } else {
+                        if (profiles.next()) {
+                            session.setAttribute("pid", profiles.getString("ProfileID"));
+                            session.setAttribute("age", profiles.getInt("Age"));
+                            session.setAttribute("datingAgeStart", profiles.getInt("DatingAgeRangeStart"));
+                            session.setAttribute("datingAgeEnd", profiles.getInt("DatingAgeRangeEnd"));
+                            session.setAttribute("datingGeoRange", profiles.getInt("DatinGeoRange"));
+                            session.setAttribute("mf", profiles.getString("M_F"));
+                            session.setAttribute("hobbies", profiles.getString("Hobbies"));
+                            session.setAttribute("weight", profiles.getInt("Weight"));
+                            session.setAttribute("height", profiles.getFloat("Height"));
+                            session.setAttribute("creationDate", profiles.getDate("CreationDate"));
+                            session.setAttribute("updateDate", profiles.getDate("LastModDate"));
+                            session.setAttribute("hairColor", profiles.getString("HairColor"));
+                            response.sendRedirect("profileview.jsp?vid=" + session.getAttribute("pid"));
 
+                        } else {
+                            request.setAttribute("message", "Unable to get profile");
+                            session.setAttribute("login", "");
+                            response.sendRedirect("index.jsp");
+                        }
+
+                    }
+                } else {
+                    response.sendRedirect("index.jsp");
                 }
             }
         }
     }
 
-    if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("login") && request.getParameter("multi") != null && request.getParameter("multi").equalsIgnoreCase("true")) {
+    if (request.getParameter("actiontype").equalsIgnoreCase("login") && request.getParameter("multi").equalsIgnoreCase("true")) {
 
 
         String Profile = "select * from Profile where ProfileID='" + request.getParameter("pid") + "';";

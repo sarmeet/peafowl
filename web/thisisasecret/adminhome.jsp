@@ -15,13 +15,6 @@
 
     if (session.getAttribute("Role").equals("Manager")) { %>
 
-Determine which customer representative generated most total revenue
-Determine which customer generated most total revenue
-Produce a list of most active customers
-Produce a list of all customers who have dated a particular customer
-Produce a list of the highest-rated customers
-Produce a list of the highest-rated calendar dates to have a date on
-
 
 <% }
 
