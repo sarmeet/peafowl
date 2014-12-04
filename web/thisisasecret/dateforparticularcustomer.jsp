@@ -14,9 +14,6 @@ common in all pages.
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
 
-    if (session.getAttribute("admin") != null && session.getAttribute("admin").equals("true")) {
-        response.sendRedirect("adminhome.jsp");
-    }
     try {
         if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("adminlogin")) {
             String adminLoginQuery = "select P.SSN, P.FirstName from Person P where P.Email='" + request.getParameter("email") + "' and P.Password='" + request.getParameter("password") + "';";
