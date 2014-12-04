@@ -44,7 +44,7 @@ common in all pages.
 <body>
 <div class="container-fluid">
     <div class="row row-centered">
-        <div class="col-lg-4 col-md-4 col-sm-10 col-centered translucent-background">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-centered translucent-background">
             <%if (request.getParameter("actiontype") == null || request.getParameter("actiontype").equals("")) {%>
 
 
@@ -54,7 +54,7 @@ common in all pages.
             </h3>
             <div class="text-center">
             </div>
-            <form action="sales.jsp" method="POST">
+            <form action="monthlysales.jsp" method="POST">
                 <input type="hidden" name="actiontype" value="monthlysales">
 
                 <div class="form-group">
@@ -74,18 +74,17 @@ common in all pages.
                         <option value="12">December</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-default">Login</button>
+                <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <%
                 }
 
-                if (request.getParameter("actiontype").equalsIgnoreCase("monthlysales")) {
+                if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("monthlysales")) {
 
-                    String query = "SELECT D.Date_Time, D.BookingFee, D.Profile1, D.Profile2, P.FirstName " +
-                            "AS CustRepFirstName, P.LastName AS CustRepLastName " +
+                    String query = "SELECT D.Date_Time, D.Profile1, D.Profile2, D.BookingFee ,D.Location, P.FirstName AS CustRepFirstName, P.LastName AS CustRepLastName " +
                             "FROM Date D, Person P " +
-                            "WHERE Date(D.Date_Time) > '2014-" + request.getParameter("month") + "-30' AND Date(D.Date_Time) < '2014-" + request.getParameter("month") + "-01'AND D.CustRep = P.SSN;";
-                    out.print(query);
+                            "WHERE D.Date_Time < '2014-" + request.getParameter("month") + "-30' AND D.Date_Time > '2014-" + request.getParameter("month") + "-01' AND D.CustRep = P.SSN;";
+                    System.out.println(query);
 
                     ResultSet rs = DBConnection.ExecQuery(query);
             %>
@@ -103,12 +102,9 @@ common in all pages.
                     <th>
                         Profile 2
                     </th>
-                    <th>
-                        Customer Rep. First Name
-                    </th>
 
                     <th>
-                        Customer Rep. Last Name
+                        CustRep
                     </th>
                 </tr>
 
@@ -131,21 +127,18 @@ common in all pages.
 
                         <%out.print(rs.getString("Profile2"));%>
                     </td>
-                    <td>
-                        <%out.print(rs.getString("FirstName"));%>
-                    </td>
+
                     <td>
 
-                        <%out.print(rs.getString("LastName"));%>
+                        <%out.print(rs.getString("CustRepFirstName") + " " + rs.getString("CustRepLastName"));%>
                     </td>
-
 
                 </tr>
 
 
                 <%
-                    }
-                <%}%>
+                        }
+                    }%>
             </table>
         </div>
     </div>

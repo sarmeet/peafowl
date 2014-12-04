@@ -44,39 +44,41 @@ common in all pages.
 <body>
 <div class="container-fluid">
     <div class="row row-centered">
-        <div class="col-lg-4 col-md-4 col-sm-10 col-centered translucent-background">
+        <div class="col-lg-8 col-md-8 col-sm-10 col-centered translucent-background">
             <%if (request.getParameter("actiontype") == null || request.getParameter("actiontype").equals("")) {%>
 
 
             <div class="text-center">
             </div>
-            <form action="datebydate.jsp" method="POST">
+            <form action="datebyname.jsp" method="POST">
                 <input type="hidden" name="actiontype" value="datebyname">
 
                 <div class="form-group">
-                    <label for="month">Select a Person</label>
+                    <label for="person">Select a Person</label>
                     <%
-                    String query = "Select P.FirstName,P.LastName, P.SSN from Person";
+                        String query = "Select * from Person";
 
                         ResultSet rs = DBConnection.ExecQuery(query);
                     %>
-                    <select class="form-control" id="month" name="person">
+                    <select class="form-control" id="person" name="person">
                         <%while(rs.next()){%>
-                        <option value="<%out.print(rs.getString("SSN"));%>"><%out.print(rs.getString("FirstName") + " " + rs.getString("LastName"));%></option>
+                        <option value="<%out.print(rs.getString("FirstName") + " " + rs.getString("LastName"));%>"><%
+                            out.print(rs.getString("FirstName") + " " + rs.getString("LastName"));%></option>
                         <%}%>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-default">Login</button>
+                <button type="submit" class="btn btn-default">Search</button>
             </form>
             <%
                 }
-                if (request.getParameter("actiontype").equalsIgnoreCase("datebyname")) {
-
-                    String query = "SELECT DISTINCT D.Date_Time, D.Profile1, D.Profile2, D.Location, P2.FirstName AS CustRepFirstName, P2.LastName AS CustRepLastName" +
-                            "FROM Date D, Person P, Profile PE, Employee E, Person P2" +
-
-                            "WHERE (D.Profile1 = PE.ProfileID OR D.Profile2 = PE.ProfileID) AND PE.OwnerSSN = P.SSN AND P.FirstName = 'Malachi' AND P.LastName = 'Vazquez' AND D.CustRep = P2.SSN;";
-                    out.print(query);
+                if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equalsIgnoreCase("datebyname")) {
+                    String name = request.getParameter("person");
+                    String[] namearr = name.split(" ");
+                    String query = "SELECT DISTINCT D.Date_Time,D.BookingFee, D.Profile1, D.Profile2, D.Location, P2.FirstName AS CustRepFirstName, P2.LastName AS CustRepLastName " +
+                            "FROM Date D, Person P, Profile PE, Employee E, Person P2 " +
+                            "WHERE (D.Profile1 = PE.ProfileID OR D.Profile2 = PE.ProfileID) AND PE.OwnerSSN = P.SSN AND" +
+                            " P.FirstName = '" + namearr[0] + "' AND P.LastName = '" + namearr[1] + "' AND D.CustRep = P2.SSN;";
+                    System.out.print(query);
 
                     ResultSet rs = DBConnection.ExecQuery(query);
             %>
@@ -111,32 +113,26 @@ common in all pages.
                         <%out.print(rs.getString("Date_Time"));%>
                     </td>
                     <td>
-
                         <%out.print(rs.getString("BookingFee"));%>
                     </td>
                     <td>
-
                         <%out.print(rs.getString("Profile1"));%>
                     </td>
                     <td>
-
                         <%out.print(rs.getString("Profile2"));%>
                     </td>
                     <td>
-                        <%out.print(rs.getString("FirstName"));%>
+                        <%out.print(rs.getString("CustRepFirstName"));%>
                     </td>
                     <td>
-
-                        <%out.print(rs.getString("LastName"));%>
+                        <%out.print(rs.getString("CustRepLastName"));%>
                     </td>
-
-
                 </tr>
 
 
                 <%
                     }
-                <%}%>
+                    }%>
             </table>
         </div>
     </div>

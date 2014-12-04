@@ -21,9 +21,12 @@ common in all pages.
 <html class="no-js"> <!--<![endif]-->
 
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js"> <!--<![endif]-->
 <head>
@@ -68,21 +71,24 @@ common in all pages.
         <div class="col-lg-10 col-md-10 col-sm-10 col-centered translucent-background">
 
             <%
-                if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equals("datebydate")) {
+                if (request.getParameter("actiontype") != null && request.getParameter("actiontype").equals("date")) {
+                    int total = 0;
 
-                String query="SELECT D.Date_Time, D.Profile1, D.Profile2, D.Location, P.FirstName AS "+
-                        "CustRepFirstName, P.LastName AS CustRepLastName " +
-                        "FROM Date D, Person P " +
-                        "WHERE D.Date_Time >= '" + request.getParameter("datetime") + " 00:00:00' AND D.Date_Time <= '" + request.getParameter("datetime") + " 23:59:59' AND D.CustRep = P.SSN;";
-                System.out.println(query);
-                ResultSet rs = DBConnection.ExecQuery(query);
-                    %>
+                    String query = "SELECT D.Date_Time,D.BookingFee, D.Profile1, D.Profile2, D.Location, P.FirstName AS " +
+                            "CustRepFirstName, P.LastName AS CustRepLastName " +
+                            "FROM Date D, Person P " +
+                            "WHERE D.Date_Time >= '" + request.getParameter("datetime") + " 00:00:00' AND D.Date_Time <= '" + request.getParameter("datetime") + " 23:59:59' AND D.CustRep = P.SSN;";
+                    System.out.println(query);
+                    ResultSet rs = DBConnection.ExecQuery(query);
+            %>
             <table class="table table-hover">
                 <tr>
                     <th>
                         Date
                     </th>
-
+                    <th>
+                        Fee($)
+                    </th>
                     <th>
                         Profile 1
                     </th>
@@ -96,7 +102,6 @@ common in all pages.
                         Customer Rep. Name
                     </th>
                 </tr>
-
                 <%
                     while (rs.next()) {
                 %>
@@ -105,38 +110,44 @@ common in all pages.
                         <%out.print(rs.getString("Date_Time"));%>
                     </td>
                     <td>
+                        <%
+                            out.print(rs.getString("BookingFee"));
+                            total += Integer.parseInt(rs.getString("BookingFee"));
+                        %>
 
+                    </td>
+                    <td>
                         <%out.print(rs.getString("Profile1"));%>
                     </td>
                     <td>
-
                         <%out.print(rs.getString("Profile2"));%>
                     </td>
-
                     <td>
-
                         <%out.print(rs.getString("Location"));%>
                     </td>
                     <td>
                         <%out.print(rs.getString("CustRepFirstName") + " ");%>
                         <%out.print(rs.getString("CustRepLastName"));%>
                     </td>
-
-
+                </tr>
+                <%
+                    }%>
+                <tr>
+                    <th>
+                        Total
+                    </th>
+                    <td><%out.print(total);%></td>
                 </tr>
 
-
-                <%
-                    }
-                    }%>
+                <%}%>
             </table>
 
 
+            <%if (request.getParameter("actiontype") == null) {%>
 
-            <%if(request.getParameter("actiontype")== null) {%>
+            <form action="salesbycalendardate.jsp" method="POST">
+                <input type="hidden" name="actiontype" value="date">
 
-            <form action="datebydate.jsp" method="POST">
-                <input type="hidden" name="actiontype" value="datebydate">
                 <div class="form-group">
                     <label for="datetimepicker1">Data and Time</label>
 
@@ -157,7 +168,6 @@ common in all pages.
                 </script>
                 <button type="submit" class="btn btn-default">Login</button>
             </form>
-
 
 
             <%}%>
